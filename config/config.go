@@ -1,39 +1,35 @@
 package config
 
 import (
-	"bufio"
-	"fmt"
 	"log"
-	"os"
-	"strings"
 
 	"github.com/spf13/viper"
 )
 
 var (
 	defaults = map[string]interface{}{
-		"DEBUG":             true,
-		"PORT":              80,
-		"LOG_FILE":          "",
-		"SERVER_NAME":       "localhost",
-		"AUTH":              "http://localhost:8080/auth/",
-		"CLIENT":            "http://localhost:3000",
-		"UPLOAD_DIR":        "./uploads/",
-		"SSL_CERT":          "",
-		"SSL_KEY":           "",
-		"DB_HOST":           "host",
-		"DB_PORT":           5432,
-		"DB_NAME":           "database",
-		"DB_USER":           "user",
-		"DB_PASSWORD":       "password",
-		"RSA_PUBLIC_KEY":    "public.pem",
-		"RSA_PRIVATE_KEY":   "private.pem",
-		"REDIS_HOST":        "localhost",
-		"REDIS_PORT":        6379,
-		"REDIS_PASSWORD":    "",
-		"REDIS_DB":          0,
-		"REDIS_EXP_SECONDS": 3600,
-		"ALLOWED_ORIGINS":   "",
+		"DEBUG":    true,
+		"PORT":     80,
+		"LOG_FILE": "",
+		// "SERVER_NAME":       "localhost",
+		"AUTH": "http://localhost:8080/auth/",
+		// "CLIENT":            "http://localhost:3000",
+		// "UPLOAD_DIR":        "./uploads/",
+		"SSL_CERT":    "",
+		"SSL_KEY":     "",
+		"DB_HOST":     "host",
+		"DB_PORT":     5432,
+		"DB_NAME":     "database",
+		"DB_USER":     "user",
+		"DB_PASSWORD": "password",
+		// "RSA_PUBLIC_KEY":    "public.pem",
+		// "RSA_PRIVATE_KEY":   "private.pem",
+		// "REDIS_HOST":        "localhost",
+		// "REDIS_PORT":        6379,
+		// "REDIS_PASSWORD":    "",
+		// "REDIS_DB":          0,
+		// "REDIS_EXP_SECONDS": 3600,
+		"ALLOWED_ORIGINS": "",
 	}
 	configPaths = []string{
 		".",
@@ -108,31 +104,31 @@ func ReadConfig(ENV string) (Configuration, error) {
 	} else {
 		config.Protocol = "https"
 	}
-	// Read RSA keys
-	config.RSAPublicKey, err = readKey(config.RSAPublicKey)
-	if err != nil {
-		return config, err
-	}
-	config.RSAPrivateKey, err = readKey(config.RSAPrivateKey)
-	if err != nil {
-		return config, err
-	}
+	// // Read RSA keys
+	// config.RSAPublicKey, err = readKey(config.RSAPublicKey)
+	// if err != nil {
+	// 	return config, err
+	// }
+	// config.RSAPrivateKey, err = readKey(config.RSAPrivateKey)
+	// if err != nil {
+	// 	return config, err
+	// }
 	return config, nil
 }
 
-func readKey(path string) (string, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return "", err
-	}
-	defer file.Close()
+// func readKey(path string) (string, error) {
+// 	file, err := os.Open(path)
+// 	if err != nil {
+// 		return "", err
+// 	}
+// 	defer file.Close()
 
-	scanner := bufio.NewScanner(file)
-	scanner.Split(bufio.ScanLines)
-	var lines []string
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
+// 	scanner := bufio.NewScanner(file)
+// 	scanner.Split(bufio.ScanLines)
+// 	var lines []string
+// 	for scanner.Scan() {
+// 		lines = append(lines, scanner.Text())
+// 	}
 
-	return fmt.Sprintf("%s\n", strings.Join(lines, "\n")), nil
-}
+// 	return fmt.Sprintf("%s\n", strings.Join(lines, "\n")), nil
+// }

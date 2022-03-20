@@ -42,6 +42,10 @@ func NewMuxHandler(opts MuxHandlerOptions) Handler {
 }
 
 func (h *MuxHandler) setupRoutes() {
+
+	open := h.router.NewRoute().Subrouter() // -> unauthenticated endpoints
+	open.HandleFunc("/health", h.HealthCheck).Methods("GET", "OPTIONS")
+
 	authMiddleware := middleware.CreateJwtUUIDMiddleware(h.authEndpoint, uuidParam)
 	auth := h.router.NewRoute().Subrouter() // -> authenticated endpoints
 	auth.Use(authMiddleware)
@@ -59,6 +63,10 @@ func (h *MuxHandler) GetRouter() http.Handler {
 func (h *MuxHandler) AllowOrigins(allowedOrigins []string) {
 	cors := middleware.CreateCORSMiddleware(allowedOrigins)
 	h.router.Use(cors)
+}
+
+func (h *MuxHandler) HealthCheck(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "healthy")
 }
 
 func (h *MuxHandler) GetTilsByUserID(w http.ResponseWriter, r *http.Request) {

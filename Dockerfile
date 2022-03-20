@@ -1,7 +1,9 @@
 # Build stage
 FROM golang:1-alpine as builder
 
-# RUN apk update && apk add openssl
+RUN apk update && apk add git
+
+# RUN apk add openssl
 # RUN mkdir /etc/ssl/til-api
 # RUN openssl req -x509 -newkey rsa:4096 -keyout /etc/ssl/til-api/key.pem -out /etc/ssl/til-api/cert.pem -days 365 -nodes -subj '/CN=*'
 
