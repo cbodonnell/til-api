@@ -1,0 +1,17 @@
+# Configuration
+config.*.json
+*.env
+
+# Binaries
+til-api
+til-api.exe
+
+# Static files
+static/*
+
+# Jenkinsfile
+Jenkinsfile
+
+# Database volumes
+*.sql
+postgres-data/*

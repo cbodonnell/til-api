@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+    environment {
+        ENV="/etc/til-api/prod"
+    }
+    stages {
+        stage('build') {
+            steps {
+                echo 'building...'
+                sh 'sudo docker build -t cbodonnell/til-api -f Dockerfile.prod .'
+            }
+        }
+        stage('test') {
+            steps {
+                echo 'testing...'
+            }
+        }
+        stage('deploy') {
+            steps {
+                echo 'deploying...'
+                sh 'sudo cp ./init_db.sql /etc/til-api/init_db.sql'
+                sh 'sudo ENV=$ENV docker-compose --env-file="$ENV.env" -f docker-compose.prod.yml up -d'
+            }
+        }
+    }
+    post {
+        cleanup {
+            deleteDir()
+        }
+    }
+}
